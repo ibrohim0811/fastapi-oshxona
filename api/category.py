@@ -23,8 +23,10 @@ def get_categories():
 @router.get("/category/{category_id}", response_model=List[CategorySchema])
 def get_category_id(category_id: int):
     data = category_detail(category_id)
-    formatted_data = [{"id": data[0], "name": data[1]}]
-    return formatted_data
+    if data:
+        formatted_data = [{"id": data[0], "name": data[1]}]
+        return formatted_data
+    raise HTTPException(404, "Bunday kategoriya mavjud emas!")
 
 
 @router.post("/category")

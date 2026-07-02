@@ -1,21 +1,14 @@
 from fastapi import FastAPI
 
 
-from database import (
-    create_table, create_item, 
-    create_orders, create_user,
-    create_order_item
-)
+from database import create_table
 from api.category import router as category
 from api.item import router as item
 from api.order import router as order
 from api.user import router as user
 
 create_table()
-create_user()
-create_item()
-create_orders()
-create_order_item()
+
 
 app = FastAPI()
 app.include_router(category)

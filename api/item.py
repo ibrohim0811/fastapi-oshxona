@@ -18,9 +18,10 @@ def get_items():
 @router.get('/item/{item_id}', response_model=List[ItemSchema])
 def get_item(item_id: int):
     data = item(item_id=item_id)
-    formatted_data = [{"id": data[0], "name": data[1], "about": data[2], "price": data[3], "is_active": data[4], "category_id": data[5]}]
-    return formatted_data
-
+    if data:
+        formatted_data = [{"id": data[0], "name": data[1], "about": data[2], "price": data[3], "is_active": data[4], "category_id": data[5]}]
+        return formatted_data
+    raise HTTPException(404, "Bunday item mavjud emmas!")
 
 @router.post('/item/')
 def create_item(item: ItemSchema):

@@ -10,13 +10,6 @@ def create_table():
         name VARCHAR(200)
     );
     """)
-    conn.commit()
-    conn.close()
-
-
-def create_user():
-    conn = sqlite3.connect("oshxona.db")
-    cur = conn.cursor()
     cur.execute("""
     CREATE TABLE IF NOT EXISTS customer(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,13 +18,6 @@ def create_user():
         email TEXT UNIQUE 
     );
     """)
-    conn.commit()
-    conn.close()
-
-
-def create_item():
-    conn = sqlite3.connect("oshxona.db")
-    cur = conn.cursor()
     cur.execute("""
     CREATE TABLE IF NOT EXISTS items(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,13 +30,6 @@ def create_item():
             ON DELETE CASCADE
     );
     """)
-    conn.commit()
-    conn.close()
-
-
-def create_orders():
-    conn = sqlite3.connect("oshxona.db")
-    cur = conn.cursor()
     cur.execute("""
     CREATE TABLE IF NOT EXISTS orders(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,13 +39,6 @@ def create_orders():
             ON DELETE CASCADE
     );
     """)
-    conn.commit()
-    conn.close()
-
-
-def create_order_item():
-    conn = sqlite3.connect("oshxona.db")
-    cur = conn.cursor()
     cur.execute("""
     CREATE TABLE IF NOT EXISTS order_items(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,5 +51,3 @@ def create_order_item():
     """)
     conn.commit()
     conn.close()
-
-
