@@ -1,13 +1,11 @@
 from fastapi import FastAPI
 
 
-from database import create_table
 from api.category import router as category
 from api.item import router as item
 from api.order import router as order
 from api.user import router as user
 
-create_table()
 
 
 app = FastAPI()

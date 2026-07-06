@@ -1,53 +1,23 @@
-import sqlite3
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./oshxona.db"
+
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"check_same_thread": False},  
+)
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-def create_table():
-    conn = sqlite3.connect("oshxona.db")
-    cur = conn.cursor()
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS categories(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR(200)
-    );
-    """)
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS customer(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name VARCHAR(200),
-        last_name VARCHAR(200),
-        email TEXT UNIQUE 
-    );
-    """)
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS items(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR(200) NOT NULL,
-        about TEXT,
-        price INTEGER,
-        is_active BOOLEAN DEFAULT TRUE,
-        category_id INTEGER,
-        FOREIGN KEY (category_id) REFERENCES categories(id)
-            ON DELETE CASCADE
-    );
-    """)
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS orders(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        status VARCHAR(100) DEFAULT 'pending',
-        customer_id INTEGER NOT NULL,
-        FOREIGN KEY (customer_id) REFERENCES customer(id)
-            ON DELETE CASCADE
-    );
-    """)
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS order_items(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        order_id INTEGER,
-        menu_item_id INTEGER, 
-        
-        FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-        FOREIGN KEY (menu_item_id) REFERENCES items(id) ON DELETE CASCADE
-    );
-    """)
-    conn.commit()
-    conn.close()
+class Base(DeclarativeBase):
+    pass
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
