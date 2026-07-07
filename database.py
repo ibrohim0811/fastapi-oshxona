@@ -6,16 +6,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./oshxona.db"
 
-USER = "postgres"         
-PASSWORD = os.getenv("POSTGRES_USER_PASSWORD")  
-HOST = "localhost"          
-PORT = "5432"               
-DB_NAME = "oshxona"     
+PASSWORD = os.getenv("POSTGRES_PASSWORD")  
+USER = os.getenv("USER") 
+HOST = os.getenv("HOST") 
+PORT = os.getenv("PORT") 
+DB_NAME = os.getenv("DB_NAME") 
 
 # 2. Ulanish URL-manzilini yaratish
-DATABASE_URL = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}"
+DATABASE_URL = f"postgresql://postgres:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}"
+
+
 
 engine = create_engine(
     DATABASE_URL  

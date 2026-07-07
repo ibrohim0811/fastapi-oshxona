@@ -1,14 +1,6 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column, Session
-from database import Base
+from sqlalchemy.orm import Session
+from models import Category
 
-
-
-class Category(Base):
-    __tablename__ = "category"
-
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(String(100))
 
 
 def categories(db: Session):
@@ -16,7 +8,8 @@ def categories(db: Session):
 
 
 def category_detail(id, db: Session):
-    return db.query(Category).filter(id == id).first()
+    data = db.query(Category).filter(Category.id == id).first()
+    return data
 
 
 def category_create(category_name: str, db: Session):
@@ -25,7 +18,7 @@ def category_create(category_name: str, db: Session):
     )
     db.add(category)
     db.commit()
-    
+    db.refresh(category)
 
 
 def category_update(id: int, category_name: str, db: Session):

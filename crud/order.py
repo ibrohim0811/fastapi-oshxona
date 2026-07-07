@@ -1,22 +1,7 @@
-from enum import Enum
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, Session
+from sqlalchemy.orm import Session
 
-from database import Base
+from models import Order
 
-class StatusChoices(str, Enum):
-    PENDING = "pending"
-    PREPARING = "preparing"
-    DELIVERY = "delivery"
-    DELIVERED = "delivered"
-    DECLINED = "declined"
-
-class Order(Base):
-    __tablename__ = "order"
-
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    status: Mapped[StatusChoices] = mapped_column(default=StatusChoices.PENDING)
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customer.id"))
 
 
 def orders(db: Session):

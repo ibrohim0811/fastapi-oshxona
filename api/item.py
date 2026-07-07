@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from models.item import items, item, item_create, item_update, item_delete
+from crud.item import items, item, item_create, item_update, item_delete
 from schemas.items import ItemSchema, ItemPatchSchema
 from database import get_db
 
@@ -13,16 +13,14 @@ router = APIRouter(
 @router.get('/items', response_model=List[ItemSchema])
 def get_items(db: Session = Depends(get_db)):
     data = items(db=db)
-    formatted_data = [{"id": row[0], "name": row[1], "about": row[2], "price": row[3], "is_active": row[4], "category_id": row[5]} for row in data]
-    return formatted_data
+    return data
 
 
 @router.get('/item/{item_id}', response_model=List[ItemSchema])
 def get_item(item_id: int, db: Session = Depends(get_db)):
     data = item(item_id=item_id, db=db)
     if data:
-        formatted_data = [{"id": data[0], "name": data[1], "about": data[2], "price": data[3], "is_active": data[4], "category_id": data[5]}]
-        return formatted_data
+        return data
     raise HTTPException(404, "Bunday item mavjud emmas!")
 
 @router.post('/item/')

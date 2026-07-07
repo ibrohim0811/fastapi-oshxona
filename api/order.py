@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from models.order import order, orders, order_update, order_create, order_delete
+from crud.order import order, orders, order_update, order_create, order_delete
 from schemas.orders import OrderSchema, OrderCreateSchema, OrderSchemaPatch, OrderSchemaid
 from database import get_db
 
@@ -15,8 +15,7 @@ router = APIRouter(
 def get_order(db: Session = Depends(get_db)):
     data = orders(db=db)
     if data is not None:
-        formatted_data = [{"id": row[0], "name": row[1], "about": row[2], "price": row[3], "is_active": row[4], "category_id": row[5]} for row in data]
-        return formatted_data
+        return data
     raise HTTPException(404, "Baza bo'm-bo'sh")
 
 
@@ -24,8 +23,7 @@ def get_order(db: Session = Depends(get_db)):
 def get_item(order_id: int, db: Session = Depends(get_db)):
     data = order(order_id=order_id, db=db)
     if data is not None:
-        formatted_data = [{"id": data[0], "status": data[1], "customer_id": data[2]}]
-        return formatted_data
+        return data
     raise HTTPException(404, "Buyurtma mavjud emas!")
 
 

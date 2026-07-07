@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from models.user import (
+from crud.user import (
 customer, customers, 
 customer_update, customer_create, 
 customer_delete
@@ -18,16 +18,14 @@ router = APIRouter(
 def get_customers(db: Session = Depends(get_db)):
     data = customers(db=db)
 
-    formatted_data = [{"id":row[0], "first_name":row[1], "last_name":row[2], "email":row[3]} for row in data]
-    return formatted_data
+    return data
 
 
 @router.get('/customer/{customer_id}')
 def get_customer(customer_id: int,  db: Session = Depends(get_db)):
     data = customer(customer_id=customer_id, db=db)
     if data:
-        formatted_data = [{"id":data[0], "first_name":data[1], "last_name":data[2], "email":data[3]}]
-        return formatted_data
+        return data
     raise HTTPException(404, "Bunday User mavjud emas")
 
 

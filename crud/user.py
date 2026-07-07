@@ -1,16 +1,7 @@
-from sqlalchemy import String
-from sqlalchemy.orm import mapped_column, Mapped, Session
-from database import Base
+from sqlalchemy.orm import Session
 
+from models import Customer
 
-class Customer(Base):
-
-    __tablename__ = "customer"
-
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    first_name: Mapped[str] = mapped_column(String(250))
-    last_name: Mapped[str] = mapped_column(String(250))
-    email: Mapped[str] = mapped_column(String(350), unique=True)
 
 def customers(db: Session):
     customers_data = db.query(Customer).all()

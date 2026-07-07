@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from schemas.category import CategorySchema, CategoryCreateSchema, CategoryPatchSchema, CategoryPutSchema
-from models.categorydb import (
+from crud.categorydb import (
 categories, category_detail, 
 category_create, category_delete, 
 category_update
@@ -18,16 +18,14 @@ router = APIRouter(
 @router.get("/categories", response_model=List[CategorySchema])
 def get_categories(db: Session = Depends(get_db)):
     db_data = categories(db)
-    formatted_data = [{"id": row[0], "name": row[1]} for row in db_data]
-    return formatted_data
+    return db_data
 
 
 @router.get("/category/{category_id}", response_model=List[CategorySchema])
 def get_category_id(category_id: int, db: Session = Depends(get_db)):
     data = category_detail(category_id, db)
     if data:
-        formatted_data = [{"id": data[0], "name": data[1]}]
-        return formatted_data
+        return data
     raise HTTPException(404, "Bunday kategoriya mavjud emas!")
 
 

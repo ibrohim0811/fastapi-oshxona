@@ -1,18 +1,6 @@
-from sqlalchemy import String, Integer, Boolean, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, Session
-from database import Base
+from sqlalchemy.orm import Session
+from models import Item
 
-
-class Item(Base):
-    __tablename__ = "item"
-
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(String(200))
-    about: Mapped[str] = mapped_column(String(500))
-    price: Mapped[int] = mapped_column(Integer)
-    is_active: Mapped[bool] = mapped_column(Boolean)
-    category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
-        
 
 def items(db: Session):
     return db.query(Item).all()
