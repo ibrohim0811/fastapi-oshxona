@@ -1,11 +1,24 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 SQLALCHEMY_DATABASE_URL = "sqlite:///./oshxona.db"
 
+USER = "postgres"         
+PASSWORD = os.getenv("POSTGRES_USER_PASSWORD")  
+HOST = "localhost"          
+PORT = "5432"               
+DB_NAME = "oshxona"     
+
+# 2. Ulanish URL-manzilini yaratish
+DATABASE_URL = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}"
+
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},  
+    DATABASE_URL  
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
